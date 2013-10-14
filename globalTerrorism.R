@@ -66,23 +66,6 @@ xyplot(tot~gdpPercap, woundestG, group=attacktype1_txt,auto.key=TRUE,pch=18,cex=
 
 
 
-#cities, hostages
-
-
-regionsyears<-(ddply(dat, region_txt~iyear, function(x) { return(data.frame(totAttacks = nrow(x))) }))
-breaks <- seq(from = min(regionsyears$iyear), to = max(regionsyears$iyear), by = 5)
-a <- cut(regionsyears$iyear, breaks = breaks, include.lowest=TRUE, right=FALSE)
-regionsyears$bin <- a
-regionsyears <- regionsyears[complete.cases(regionsyears),]
-regionbinyears<-ddply(regionsyears, region_txt~bin, function(x){data.frame(sum(x$totAttacks))})
-
-regionsOrder<-order(table(dat$region_txt),decreasing=TRUE)
-regionsLevels<-names(table(dat$region_txt))[regionsOrder]
-regionbinyears$region_txt<-factor(regionbinyears$region_txt,levels=regionsLevels)
-
-d<-ggplot(regionbinyears, aes(x=sum.x.totAttacks., y=region_txt, cex=2))
-d+geom_point(show_guide=FALSE)+facet_wrap(~bin)+aes(col=region_txt)
-
 
 
 

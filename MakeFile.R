@@ -5,5 +5,4 @@
 #file.remove(outputs)
 
 ## run my scripts
-#source("01_filterReorder.R")
-#source("02_aggregatePlot.R")
+source("01_preprocessData.R")
