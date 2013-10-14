@@ -1,3 +1,4 @@
+# read the raw input
 dat <- read.csv("globalterrorismdb.csv", header = TRUE, na.strings = c("", "."))
 dim(dat)
 israel <- subset(dat, country_txt == 'Israel')
@@ -6,6 +7,8 @@ write.csv(israel, "globalterrorismdbIsrael.csv", quote = FALSE, row.names = FALS
 ddd <- read.csv("globalterrorismdbIsrael.csv", header = TRUE)
 
 # only keep columns we need. rename region_txt to just region, etc
+# NA->0
+# 6 and 12 regions to USSR
 
 # install.packages("maps")
 # install.packages("mapdata")
@@ -110,3 +113,24 @@ citiesfull<-rbind(citiesfull, subset(cbind(bycity[bycity$city=='Belfast',], worl
 arrange(citiesfull,totAttacks)
 map('worldHires')
 points(x=citiesfull$long,y=citiesfull$lat,col=palette(),pch=15, cex=2)
+
+
+
+
+
+csea<-droplevels(unique(subset(dat, region_txt=='Southeast Asia')$country_txt))
+map('worldHires')
+map('worldHires',regions=csea,add=TRUE,col='yellow',fill=TRUE)
+library(fBasics)
+regionDanger<-arrange(ddply(subset(dat,iyear>=2000), ~region_txt, function(x){data.frame(tot=nrow(x))}),desc(tot))
+heatColors <- seqPalette(max(regionDanger$tot),name="Reds")
+regionDanger$col <- heatColors[regionDanger$tot]
+heatColorsRank <- seqPalette(13,name="Reds")
+regionDanger$colRank <- rev(heatColorsRank)
+
+map('worldHires')
+for(i in 1:nrow(regionDanger)){
+  cc<-droplevels(unique(subset(dat, region_txt==regionDanger[i,'region_txt'])$country_txt))
+  if(i==6 | i==12) {cc<-c('USSR')}
+  map('worldHires',regions=cc,add=TRUE,col=regionDanger[i,'col'],fill=TRUE)
+}
