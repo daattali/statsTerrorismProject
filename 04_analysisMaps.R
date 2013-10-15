@@ -1,20 +1,9 @@
+source('common.R')
 
+# load the maps data
 library(maps)
 library(mapdata)
-library(plyr)
 data(world.cities)
-
-map('worldHires',c('Israel','Bulgaria'),xlim=c(21,37),ylim=c(28,45))
-map.cities(country='Israel',minpop=80000,label=FALSE)
-points( x=c(34.95, 34.77), y=c(29.56,32.07),col=c('blue','green'),pch=18,cex=c(1.9,1.3))
-idx<-which(world.cities$name %in% c('Haifa', 'Jerusalem' , 'Ashqelon', 'Sederot'))
-points(x=world.cities$long[idx], y=world.cities$lat[idx])
-
-
-
-
-
-
 
 
 
@@ -30,9 +19,9 @@ world.cities <- within(world.cities, name <- revalue(name, c(Bayrut = "Beirut", 
 citiesfull<-merge(bycity, world.cities, by.x=c('country','city'), by.y=c('country.etc','name'))
 citiesfull<-rbind(citiesfull, subset(cbind(bycity[bycity$city=='Belfast',], world.cities[world.cities$name=='Belfast' & world.cities$country.etc == 'UK',]), select = -c(country.etc, name)))
 arrange(citiesfull,totAttacks)
-map('worldHires')
-points(x=citiesfull$long,y=citiesfull$lat,col=palette(),pch=15, cex=2)
-
+map('worldHires',fill=T,col='#EEEEEE')
+points(x=citiesfull$long,y=citiesfull$lat,col="black",pch=21, cex=2,bg='red')
+dev.print(pdf, "dangerousCitiesMap.pdf")
 
 
 

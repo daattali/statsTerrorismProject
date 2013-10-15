@@ -29,17 +29,8 @@ dat$region[dat$region == 'Central Asia'] <- 'USSR'
 dat$region[dat$region == 'Russia & the Newly Independent States (NIS)'] <- 'USSR'
 dat <- droplevels(dat)
 
-# helper function for saving a dataframe (if you want to change the parameters,
-# only need to change them once, assuming all dataframes should be saved similarly)
+# save the processed data frame, which happens to be exactly 10% of the original size
 # note that we omit quotes to save file space, but keep them for cities because some
 # city names contain commas
-writeTable <- function(x, name) {
-  write.table(x, file=name, sep=",", col.names=TRUE, row.names=FALSE, quote=which(colnames(dat) == 'city'))
-}
-
-# save the processed data frame, which happens to be exactly 10% of the original size
-writeTable(dat, "globalterrorismdb_clean.csv")
-
-# also save a subset of the data that only happens in Israel, for analysis in a separate script
-israelDat <- subset(dat, country == 'Israel')
-writeTable(israelDat, "globalterrorismdb_israel.csv")
+write.table(dat, "globalterrorismdb_clean.csv", sep=",", col.names=TRUE, row.names=FALSE,
+            quote=which(colnames(dat) == 'city'))
