@@ -1,25 +1,6 @@
-# make sure we have the necessary libraries loaded
-library(plyr)
-library(ggplot2)
-library(RColorBrewer)
+source('common.R')
 
-# read the data
-dat <- read.table("globalterrorismdb_clean.csv", header = TRUE, sep = ',')
-
-# in many plyr functions I will add a column for a simple count or sum,
-# so instead of repeating that little piece of code every time, just make them functions
-plyrFxCount <- function(x, name="count") {
-  df <- data.frame( nrow(x) )
-  colnames(df)[1] <- name
-  return(df)
-}
-plyrFxSum <- function(x, toSum, name="sum") {
-  df <- data.frame( sum(x[toSum]) )
-  colnames(df)[1] <- name
-  return(df)
-}
-
-# Let's start with some a very basic, yet upsetting, statistic in the data: the number of people
+# Let's start with a very basic, yet upsetting, statistic in the data: the number of people
 # wounded and killed by each attack type overall
 attacktypeDamage <- ddply(dat, ~attacktype, function(x){
   df <- data.frame(c("nkill", "nwound"), c(sum(x$nkill), sum(x$nwound)));
@@ -44,18 +25,25 @@ ggplot(attacktypeDamage, aes(x = attacktype, y = value, fill = stat)) +
 
 ## Now let's look at some region-level statistics
 
-# reorder region levels by total number of attacks in each region
-regionAttackOrder = order(table(dat$region), decreasing=TRUE)
-regionAttackLevels = names(table(dat$region))[regionAttackOrder]
-dat$region <- factor(dat$region, levels = regionAttackLevels)
+# let's get a quick overview of the regions, and see how many attacks happened in each 
+regionTotal <- ddply(dat, ~region, plyrFxCount)
+ggplot(regionTotal, aes(x = region, y = count, fill = region)) +
+  geom_bar(stat="identity", show_guide=FALSE) +
+  coord_flip() +
+  ggtitle("Terrorist Attacks in World Regions Since 1970") +
+  xlab("") +
+  ylab("# of Attacks") +
+  scale_fill_manual(values = regionCol) +
+  theme(panel.grid.major.y = element_blank(),
+        plot.title = element_text(face="bold"))
 
-regions = levels(dat$region)
+# It looks like overall since 1970, there hasn't been one major region that suffered more
+# than others. Every successvie region has less terror attacks than its previous, but the
+# gap is never massive.
+# Next we should zoom in and see what happens when we look at different years rather than combined history.
 
-# create a color palette for the 12 regions. Sequential Brewer palettes only have 9 colours,
-# so add a few manually (also remove their yellow and gray because they're hard to see)
-regionCol <- c(brewer.pal(9, name="Set1")[c(-6, -9)], '#EEC900', '#00CED1','#7FFF00','#E9967A', '#2F4F4F')
 
-# calculate the number of attacks in each country per year
+# calculate the number of attacks in each region per year
 regionYear <- ddply(dat, region ~ year, plyrFxCount, "nattacks")
 
 # fix a little "problem" (well, a good problem), where some regions have years with 0 attacks
@@ -186,16 +174,6 @@ topNcountriesTotal <- subset(topNcountriesTotal, select = c("region", "country",
 
 # Another possibly interesting piece of information to look at is what kinds of terror attacks
 # are most common at each region
-
-# first reorder attack types by total number of attacks per type
-attackTypeOrder = order(table(dat$attacktype), decreasing=TRUE)
-attackTypeLevels = names(table(dat$attacktype))[attackTypeOrder]
-dat$attacktype <- factor(dat$attacktype, levels = attackTypeLevels)
-
-# we also need a colour palette, we'll just slice from the region colour palette
-attacktypeCol <- regionCol[1:length(levels(dat$attacktype))]
-
-# now prepare the data and plot it
 regionAttacktype <- ddply(dat, region ~ attacktype, plyrFxCount)
 ggplot(regionAttacktype, aes(x = attacktype, y = count, fill = attacktype)) +
   geom_bar(stat="identity", show_guide=FALSE) +
@@ -205,8 +183,7 @@ ggplot(regionAttacktype, aes(x = attacktype, y = count, fill = attacktype)) +
   xlab("# of Attacks") +
   ylab("") +
   scale_fill_manual(values = attacktypeCol) +
-  theme(panel.grid.minor.x = element_blank(),
-        panel.grid.major.y = element_blank(),
+  theme(panel.grid.major.y = element_blank(),
         strip.text = element_text(face="bold"),
         plot.title = element_text(face="bold"))
 
