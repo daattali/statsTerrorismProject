@@ -88,9 +88,6 @@ points(x=citiesfull$long,y=citiesfull$lat,col=palette(),pch=15, cex=2)
 
 
 
-csea<-droplevels(unique(subset(dat, region_txt=='Southeast Asia')$country_txt))
-map('worldHires')
-map('worldHires',regions=csea,add=TRUE,col='yellow',fill=TRUE)
 library(fBasics)
 regionDanger<-arrange(ddply(subset(dat,year>=2000), ~region, function(x){data.frame(tot=nrow(x))}),desc(tot))
 heatColors <- seqPalette(max(regionDanger$tot),name="Reds")
