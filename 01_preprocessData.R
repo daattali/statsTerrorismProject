@@ -22,7 +22,8 @@ dat$nwound[is.na(dat$nwound)] <- 0
 # the world map data used later knows about the world as it was in 1980, so all the post-USSR countries
 # did not exist. For consistency, rename the two regions coming from the USSR as simply 'USSR'.
 # For most of the analysis we will keep the separate countries, but before mapping them we will need
-# to rename all individual countries to 'USSR'. For now, simply combine their regions into one. 
+# to rename all individual countries to 'USSR'. For now, simply combine their regions into one.
+# This also results in the data having 12 region levels, which is a nice number of panels to plot symmetrically :)
 levels(dat$region) <- c(levels(dat$region), 'USSR')
 dat$region[dat$region == 'Central Asia'] <- 'USSR'
 dat$region[dat$region == 'Russia & the Newly Independent States (NIS)'] <- 'USSR'

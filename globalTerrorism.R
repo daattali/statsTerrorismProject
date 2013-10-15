@@ -12,7 +12,7 @@ points(x=world.cities$long[idx], y=world.cities$lat[idx])
 
 ddply(subset(dat, country_txt == 'United States'), ~iyear, function(x){return(data.frame(tot=nrow(x)))})
 
-countriesAttacks <- ddply(dat, ~country_txt, function(x) { return(data.frame(totAttacks = nrow(x))) })
+countriesAttacks <- ddply(dat, ~country, function(x) { return(data.frame(totAttacks = nrow(x))) })
 head(arrange(countriesAttacks, totAttacks,decreasing=TRUE),n=15)
 
 
