@@ -1,5 +1,7 @@
 source('common.R')
 
+library(lattice)
+
 # 
 countriesAttacks <- ddply(dat, ~country+region, function(x) { return(data.frame(totAttacks = nrow(x))) })
 head(arrange(countriesAttacks, totAttacks,decreasing=TRUE),n=5)
@@ -33,11 +35,9 @@ xyplot(nkill~gdpPercap, bb, group=attacktype,auto.key=TRUE,pch=18,cex=1)
 # can see attacks in the US are outliers (1995 oklahoma bombing and 9/11), can also see canada 1985 and rwanda assault
 
 # MAKE COPY OF DAT FIRST, do following opeartions on the copy
-dat[is.na(dat$nkill),]$nkill = 0               
-dat[is.na(dat$nwound),]$nwound = 0
 woundest <- tail(arrange(dat, nwound+nkill), n=250)
 woundest$tot<-woundest$nkill+woundest$nwound
-woundest<-subset(woundest,select=c('year','imonth','iday','attacktype','nkill','nwound','country','tot'))
+woundest<-subset(woundest,select=c('year','month','day','attacktype','nkill','nwound','country','tot'))
 woundestG<-merge(woundest,subset(gDat, year==2007,select=c('country','gdpPercap','continent')), by.x='country',by.y='country')
 xyplot(tot~gdpPercap, woundestG, group=attacktype,auto.key=TRUE,pch=18,cex=1)
 # or arrange by continent too

@@ -1,3 +1,5 @@
+library(plyr)   # for rename, revalue
+
 # read the raw input
 dat <- read.csv("globalterrorismdb.csv", header = TRUE, na.strings = c("", "."))
 
@@ -10,9 +12,20 @@ columnsKeep <- c("iyear", "imonth", "iday", "country_txt", "region_txt", "city",
 dat <- dat[columnsKeep]
 
 # rename some columns
-library(plyr)
 dat <- rename(dat, c("iyear" = "year", "imonth" = "month", "iday" = "day",
                      "country_txt" = "country", "region_txt" = "region", "attacktype1_txt" = "attacktype"))
+
+# rename some factor levels
+dat <- within(dat, attacktype <- revalue(attacktype,
+                                         c("Hostage Taking (Kidnapping)" = "Hostage (Kidnapping)",
+                                           "Facility/Infrastructure Attack" = "Facility Attack",
+                                           "Hostage Taking (Barricade Incident)" = "Hostage (Barricade)"
+                                           )))
+dat <- within(dat, region <- revalue(region,
+                                     c("Australasia & Oceania" = "Oceania",
+                                       "Central America & Caribbean" = "Central America",
+                                       "Middle East & North Africa" = "Middle East"
+                                       )))
 
 # replace NA values for number of killed/wounded with 0
 # this isn't necessary always a smart thing to do, but it makes sense for the purposes of this analysis
