@@ -1,3 +1,6 @@
+# This script contains some common R code that is shared among the different scripts.
+# It defines some common helper functions and variables that are used often.
+
 if( exists("terrorismLoaded") ) {
   # if this script already ran, just revert the data object to its original processed form
   dat <- origDat

@@ -22,6 +22,7 @@ ggplot(attacktypeDamage, aes(x = attacktype, y = value, fill = stat)) +
   theme(panel.grid.major.y = element_blank(),
         plot.title = element_text(face="bold"))
 ggsave('globalCasualtiesSince1970.png')
+dev.off()
 
 # It is immediately visible that bombings and armed assaults are the attacks that have killed and injured
 # the most people.  With bombings, there are far more people getting injured than dying, while with armed
@@ -42,6 +43,7 @@ ggplot(regionTotal, aes(x = region, y = count, fill = region)) +
   theme(panel.grid.major.y = element_blank(),
         plot.title = element_text(face="bold"))
 ggsave('terrorismPerRegionTotal.png')
+dev.off()
 
 # It looks like overall since 1970, there hasn't been one major region that suffered more
 # than others. Every successvie region has less terror attacks than its previous, but the
@@ -72,6 +74,7 @@ ggplot(regionYear, aes(x = year, y = nattacks, color = region)) +
   theme(strip.text = element_text(face="bold"),
         plot.title = element_text(face="bold"))
 ggsave('terrorismPerRegionYears.png')
+dev.off()
 
 # This already reveals some interesting data.
 # Central America seemed to be very unstable starting at the late 1970's and slowly getting better with time,
@@ -94,6 +97,7 @@ ggplot(regionYear, aes(x = year, y = nattacks, color = region)) +
         plot.title = element_text(face="bold")) +
   guides(col = guide_legend(ncol = 2))
 ggsave('terrorismPerRegionYearsComb.png')
+dev.off()
 
 # While this looks messy and a little harder to read, it is interesting to see global patterns.
 # We can see that from the late 70's til the late 90's, many regions experienced higher terror attacks,
@@ -128,6 +132,7 @@ ggplot(regionYearBin, aes(x = region, y = nattacks, fill = region)) +
         strip.text = element_text(face="bold"),
         plot.title = element_text(face="bold"))
 ggsave('terrorismPerRegion5Year.png')
+dev.off()
 
 # From this set of plots it is much clearer what the terrorist activity situation was at different
 # regions at different time periods. Similar patterns emerge (which makes sense because we are looking
@@ -150,6 +155,7 @@ ggplot(countriesTotal, aes(x = nattacks, y = region, color = region, cex = 1.7))
         panel.background = element_rect(fill = '#FCFCFC', colour = '#D3D3D3'),
         plot.title = element_text(face="bold"))
 ggsave('countryVariationPerRegion.png')
+dev.off()
 
 # This does indeed show that ususually there are just a few countries where most of the terrorism
 # happens, whereas most other countries in the region are safer. It would be interesting to see
@@ -160,14 +166,16 @@ ggsave('countryVariationPerRegion.png')
 boringRegions <- rev(levels(countriesTotal$region))[1:3]
 countriesTotalSubset <- subset(countriesTotal, !(region %in% boringRegions))
 topNcountries <- 5
-topNcountriesTotal <-
+topNcountriesRegion <-
   ddply(countriesTotalSubset, ~region, function(x) {
     x <- arrange(x, -nattacks)
     x <- head(x, n = topNcountries)
     return(x)
   })
 # rearrange the columns to have the region first, easier to look at in table format  
-topNcountriesTotal <- subset(topNcountriesTotal, select = c("region", "country", "nattacks"))
+topNcountriesRegion <- subset(topNcountriesRegion, select = c("region", "country", "nattacks"))
+write.table(topNcountriesRegion, "countriesMostAttackedPerRegion.txt", quote = FALSE, sep = "\t",
+            col.names = TRUE, row.names = FALSE)
 
 # Ouch. Looks like Iraq is the unlucky country that attracted the most terrorism acts in the world.
 # The rest of the Middle East isn't doing amazing, but noone is close to Iraq in that geographic area.
@@ -197,6 +205,7 @@ ggplot(regionAttacktype, aes(x = attacktype, y = count, fill = attacktype)) +
         strip.text = element_text(face="bold"),
         plot.title = element_text(face="bold"))
 ggsave('attackTypesPerRegion.png')
+dev.off()
 
 # These plots reveal a few interesting bits of information. Firstly, we can see that almost everywhere
 # in the world bombings are the most common, followed by armed assaults and assassinations. Facility attacks

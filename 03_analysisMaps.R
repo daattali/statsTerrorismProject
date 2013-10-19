@@ -68,6 +68,7 @@ points(x = cityAttacksFullInfo$long,
        bg = cityAttacksFullInfo$col)
 title(paste('Top', topNcities, 'Most Terror-Attacked Cities'))
 dev.print(png, paste0("mapTop", topNcities, "DangerousCities.png"), width = 500, height = 300)
+dev.off()
 
 # The darkest spot, in the middle east, is Baghdad, and the other fairly dark
 # spot in the region (at the North-West corner of Europe) is Belfast. The rest
@@ -90,7 +91,8 @@ ggplot(capitalCounts, aes(x = Var1, y = Freq, fill = Var1)) +
   theme(panel.grid.major.x = element_blank(), panel.grid.minor.y = element_blank()) +
   scale_fill_manual(values = c('cyan3', 'turquoise'))
 ggsave("capitalsAttacked.png")
-  
+dev.off()  
+
 # Wow, 15 out of the 20 most terror filled cities are indeed capital cities.
 # Looks like terrorists really choose cities of high impact (duh..)
 
@@ -132,7 +134,9 @@ for(i in 1:nrow(regionDanger)){
       col = regionDanger[i, 'col'], 
       fill = TRUE)
 }
-dev.print(png, "mapRegionIntensities"), width = 500, height = 300)
+title('Heatmap of Terrorist Attacks\nin World Regions Since 2000')
+dev.print(png, "mapRegionIntensities.png", width = 500, height = 330)
+dev.off()
 
 # This shows pretty clearly how the Middle East and South Asia are so
 # much worse off in terms of terrorism than the rest of the world. The
