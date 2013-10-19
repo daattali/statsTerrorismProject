@@ -1,6 +1,7 @@
 ## In this script, we will do some exploratory analysis on global terrorism using the
 ## global terrorism DB and ggplot2
 
+
 source('common.R')
 
 # Let's start with a very basic, yet upsetting, statistic in the data: the number of people
@@ -121,7 +122,7 @@ regionYear <- regionYear[complete.cases(regionYear), ]
 regionYearBin <- ddply(regionYear, region ~ bin, plyrFxSum, "nattacks", "nattacks")
 ggplot(regionYearBin, aes(x = region, y = nattacks, fill = region)) +
   geom_bar(stat = "identity", show_guide=FALSE) +
-  facet_wrap(~bin) +
+  facet_wrap(~bin, ncol = 4) +
   ylab("# of Attacks") + 
   ggtitle("Number of Terrorist Attacks in World Regions\nin 5-Year Intervals Since 1970") + 
   xlab("") +
@@ -174,6 +175,7 @@ topNcountriesRegion <-
   })
 # rearrange the columns to have the region first, easier to look at in table format  
 topNcountriesRegion <- subset(topNcountriesRegion, select = c("region", "country", "nattacks"))
+colnames(topNcountriesRegion) <- c('Region', 'Country', '# Attacks')
 write.table(topNcountriesRegion, paste0(resultsDir, "countriesMostAttackedPerRegion.txt"),
             quote = FALSE, sep = "\t", col.names = TRUE, row.names = FALSE)
 
