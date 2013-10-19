@@ -1,12 +1,12 @@
 ## clean all output from previous runs of scripts
-outputs <- c("globalterrorismdb_clean.csv",          ## script 1
-             "countriesMostAttackedPerRegion.txt",   ## script 2
-             "citiesMostAttacked.txt",               ## script 3 
-             "countriesMostAttacksPerPop.txt",       ## script 4
-             "deadliestAttacksOutliers.txt",         ## script 4
-             list.files(pattern = "*.png$")          ## all figures
-            )
+## there is one final we create in the main directory (the processed dataset),
+## but the rest of the output is all in the 'results' directory
+outputs <- c("globalterrorismdb_clean.csv")
 file.remove(outputs)
+unlink("results", recursive = TRUE)
+
+# now re-create the results directory
+dir.create(file.path("results"), showWarnings = FALSE)
 
 # script 0 only has to be run once on a machine, it simply installs all required packages
 #source("00_installPackages.R")

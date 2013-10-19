@@ -53,4 +53,7 @@ if( exists("terrorismLoaded") ) {
   # keep a reference to this version of the processed data, so that if some script changes it,
   # a subsequent script will get a fresh copy
   origDat <- dat
+  
+  # the results directory
+  resultsDir <- 'results/'
 }

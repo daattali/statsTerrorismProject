@@ -30,7 +30,7 @@ cityAttacks <- head(arrange(cityAttacks, totAttacks, decreasing = TRUE), n=topNc
 
 # Before mapping these cities, let's take a look at who they are
 print(cityAttacks)
-write.table(cityAttacks, "citiesMostAttacked.txt", quote = FALSE, sep = "\t",
+write.table(cityAttacks, paste0(resultsDir, "citiesMostAttacked.txt"), quote = FALSE, sep = "\t",
             col.names = TRUE, row.names = FALSE)
 # Once again, Iraq tops the list :(  Baghdad is by far the most terror-attacked city in the world
 
@@ -67,7 +67,8 @@ points(x = cityAttacksFullInfo$long,
        col = 'black', pch = 21, cex = 2,
        bg = cityAttacksFullInfo$col)
 title(paste('Top', topNcities, 'Most Terror-Attacked Cities'))
-dev.print(png, paste0("mapTop", topNcities, "DangerousCities.png"), width = 500, height = 300)
+dev.print(png, paste0(resultsDir, "mapTop", topNcities, "DangerousCities.png"),
+          width = 500, height = 300)
 dev.off()
 
 # The darkest spot, in the middle east, is Baghdad, and the other fairly dark
@@ -90,7 +91,7 @@ ggplot(capitalCounts, aes(x = Var1, y = Freq, fill = Var1)) +
   ylab(paste('# of Cities in Top', topNcities)) +
   theme(panel.grid.major.x = element_blank(), panel.grid.minor.y = element_blank()) +
   scale_fill_manual(values = c('cyan3', 'turquoise'))
-ggsave("capitalsAttacked.png")
+ggsave(paste0(resultsDir, "capitalsAttacked.png"))
 dev.off()  
 
 # Wow, 15 out of the 20 most terror filled cities are indeed capital cities.
@@ -135,7 +136,7 @@ for(i in 1:nrow(regionDanger)){
       fill = TRUE)
 }
 title('Heatmap of Terrorist Attacks\nin World Regions Since 2000')
-dev.print(png, "mapRegionIntensities.png", width = 500, height = 330)
+dev.print(png, paste0(resultsDir, "mapRegionIntensities.png"), width = 500, height = 330)
 dev.off()
 
 # This shows pretty clearly how the Middle East and South Asia are so

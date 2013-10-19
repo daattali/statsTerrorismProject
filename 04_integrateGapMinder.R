@@ -24,8 +24,8 @@ countryAttacks <- merge(countryAttacks,
 countryAttacks$popPerAttack <- round(countryAttacks$pop / countryAttacks$totAttacks)
 countryAttacks <- arrange(countryAttacks, popPerAttack)
 print(head(countryAttacks, n = 5))
-write.table(countryAttacks, "countriesMostAttacksPerPop.txt", quote = FALSE, sep = "\t",
-            col.names = TRUE, row.names = FALSE)
+write.table(countryAttacks, paste0(resultsDir, "countriesMostAttacksPerPop.txt"),
+            quote = FALSE, sep = "\t", col.names = TRUE, row.names = FALSE)
 
 # Iraq seems to be the only country that is both in the top 10 most attacked and top 10 most
 # attacked per population. We see that all these countries are either in the Middle East or
@@ -44,7 +44,7 @@ ggplot(countryAttacksGapMinder, aes(x = gdpPercap, y = totAttacks, color = regio
   ggtitle("Terrorist Attacks Since 1970 vs GDP of Attacked Country") + 
   ylab("# of Attacks") +
   scale_color_manual(name = 'Region', values = regionCol)
-ggsave('numAttacksVsGDP.png')
+ggsave(paste0(resultsDir, 'numAttacksVsGDP.png'))
 dev.off()
 
 # This plot reveals, perhaps as we would have expected, that the countries with the most
@@ -69,7 +69,7 @@ ggplot(deadliest, aes(x = gdpPercap, y = nkill, color = attacktype)) +
   ggtitle(paste(mostNdeadly, "Most Deadly Terrorist Attacks vs. GDP of Attacked Country")) + 
   ylab("# Killed in Attack") +
   scale_color_manual(name = "Attack Type", values = attacktypeCol)
-ggsave('deadliest100AttacksVsGDP.png')
+ggsave(paste0(resultsDir, 'deadliest100AttacksVsGDP.png'))
 dev.off()
 
 # Looking at this plot, we see (as suspected) that most of the 100 deadliest attacks were in poorer countries.
@@ -79,7 +79,8 @@ dev.off()
 # Let's try to take a look at what attacks these were
 print(subset(deadliest, nkill > 1000 | gdpPercap > 35000))
 write.table(subset(deadliest, nkill > 1000 | gdpPercap > 35000),
-            "deadliestAttacksOutliers.txt", quote = FALSE, sep = "\t", col.names = TRUE, row.names = FALSE)
+            paste0(resultsDir, "deadliestAttacksOutliers.txt"),
+            quote = FALSE, sep = "\t", col.names = TRUE, row.names = FALSE)
 # Let's look at these one by one:
 # First, the single outlier among the poor counties is Rwanda.
 # This is part of the Rwandan genocide from 1994. I'm not sure why this specific point is there,

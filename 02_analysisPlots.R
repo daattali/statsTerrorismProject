@@ -21,7 +21,7 @@ ggplot(attacktypeDamage, aes(x = attacktype, y = value, fill = stat)) +
   guides(fill = guide_legend(reverse = TRUE)) +
   theme(panel.grid.major.y = element_blank(),
         plot.title = element_text(face="bold"))
-ggsave('globalCasualtiesSince1970.png')
+ggsave(paste0(resultsDir, 'globalCasualtiesSince1970.png'))
 dev.off()
 
 # It is immediately visible that bombings and armed assaults are the attacks that have killed and injured
@@ -42,7 +42,7 @@ ggplot(regionTotal, aes(x = region, y = count, fill = region)) +
   scale_fill_manual(values = regionCol) +
   theme(panel.grid.major.y = element_blank(),
         plot.title = element_text(face="bold"))
-ggsave('terrorismPerRegionTotal.png')
+ggsave(paste0(resultsDir, 'terrorismPerRegionTotal.png'))
 dev.off()
 
 # It looks like overall since 1970, there hasn't been one major region that suffered more
@@ -73,7 +73,7 @@ ggplot(regionYear, aes(x = year, y = nattacks, color = region)) +
   scale_color_manual(values = regionCol) + 
   theme(strip.text = element_text(face="bold"),
         plot.title = element_text(face="bold"))
-ggsave('terrorismPerRegionYears.png')
+ggsave(paste0(resultsDir, 'terrorismPerRegionYears.png'))
 dev.off()
 
 # This already reveals some interesting data.
@@ -96,7 +96,7 @@ ggplot(regionYear, aes(x = year, y = nattacks, color = region)) +
   theme(legend.justification = c(0,1), legend.position = c(0,1), legend.title = element_blank(),
         plot.title = element_text(face="bold")) +
   guides(col = guide_legend(ncol = 2))
-ggsave('terrorismPerRegionYearsComb.png')
+ggsave(paste0(resultsDir, 'terrorismPerRegionYearsComb.png'))
 dev.off()
 
 # While this looks messy and a little harder to read, it is interesting to see global patterns.
@@ -131,7 +131,7 @@ ggplot(regionYearBin, aes(x = region, y = nattacks, fill = region)) +
         panel.grid.major.y = element_blank(),
         strip.text = element_text(face="bold"),
         plot.title = element_text(face="bold"))
-ggsave('terrorismPerRegion5Year.png')
+ggsave(paste0(resultsDir, 'terrorismPerRegion5Year.png'))
 dev.off()
 
 # From this set of plots it is much clearer what the terrorist activity situation was at different
@@ -154,7 +154,7 @@ ggplot(countriesTotal, aes(x = nattacks, y = region, color = region, cex = 1.7))
         panel.grid.major.y = element_line(color = "#EEEEEE"),
         panel.background = element_rect(fill = '#FCFCFC', colour = '#D3D3D3'),
         plot.title = element_text(face="bold"))
-ggsave('countryVariationPerRegion.png')
+ggsave(paste0(resultsDir, 'countryVariationPerRegion.png'))
 dev.off()
 
 # This does indeed show that ususually there are just a few countries where most of the terrorism
@@ -174,8 +174,8 @@ topNcountriesRegion <-
   })
 # rearrange the columns to have the region first, easier to look at in table format  
 topNcountriesRegion <- subset(topNcountriesRegion, select = c("region", "country", "nattacks"))
-write.table(topNcountriesRegion, "countriesMostAttackedPerRegion.txt", quote = FALSE, sep = "\t",
-            col.names = TRUE, row.names = FALSE)
+write.table(topNcountriesRegion, paste0(resultsDir, "countriesMostAttackedPerRegion.txt"),
+            quote = FALSE, sep = "\t", col.names = TRUE, row.names = FALSE)
 
 # Ouch. Looks like Iraq is the unlucky country that attracted the most terrorism acts in the world.
 # The rest of the Middle East isn't doing amazing, but noone is close to Iraq in that geographic area.
@@ -204,7 +204,7 @@ ggplot(regionAttacktype, aes(x = attacktype, y = count, fill = attacktype)) +
   theme(panel.grid.major.y = element_blank(),
         strip.text = element_text(face="bold"),
         plot.title = element_text(face="bold"))
-ggsave('attackTypesPerRegion.png')
+ggsave(paste0(resultsDir, 'attackTypesPerRegion.png'))
 dev.off()
 
 # These plots reveal a few interesting bits of information. Firstly, we can see that almost everywhere

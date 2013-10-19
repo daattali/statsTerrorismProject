@@ -21,7 +21,7 @@ ggplot(israelDat, aes(x = "", fill = attacktype)) +
   theme(panel.grid = element_blank(),
         axis.text = element_blank(), axis.ticks = element_blank(),
         axis.title = element_blank(), panel.background = element_blank())
-ggsave('israelAttacktypePie.png')
+ggsave(paste0(resultsDir, 'israelAttacktypePie.png'))
 dev.off()
 
 # we can see bombings are by far the #1 most common attack, with armed assault
@@ -37,7 +37,7 @@ ggplot(attackDamage, aes(x = year, y = killed, fill = attacktype)) +
   scale_fill_brewer(type = "qual", palette = 6) +
   ggtitle("Deaths in Israel by attack type") + xlab("Year") + ylab("Number killed") +
   theme(panel.grid.minor.x = element_blank(), panel.grid.major.x = element_blank())
-ggsave('israelDeadAttacktypeYear.png')
+ggsave(paste0(resultsDir, 'israelDeadAttacktypeYear.png'))
 dev.off()
 
 # we can see that bombings indeed killed the most people (although it seems like
@@ -54,7 +54,7 @@ ggplot(bombingDamage, aes(x = year, y = value, color = variable)) +
   guides(color = guide_legend(reverse = TRUE)) +
   geom_point() +
   theme(panel.grid.minor.x = element_blank())
-ggsave('israelBombingCasualties.png')
+ggsave(paste0(resultsDir, 'israelBombingCasualties.png'))
 dev.off()
 
 # we can see that there was a huge escalation in the early 2000's, right when my dad decided to leave
@@ -77,7 +77,7 @@ ggplot(myYearsBombings, aes(x = year, fill = inTA)) +
   ylab("Number of bombings") +
   ggtitle("Sucide bombings in Israel between 1988-2002") +
   theme(panel.grid.major.x = element_blank(), panel.grid.minor.x = element_blank())
-ggsave('israelTelAvivBombings.png')
+ggsave(paste0(resultsDir, 'israelTelAvivBombings.png'))
 dev.off()
 
 # Just as a side note, 1993 was NOT some magical year of peace. All data from 1993
