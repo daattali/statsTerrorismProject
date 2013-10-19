@@ -7,6 +7,8 @@ STAT545A Final Project_
 #### Summary
 In this project, I explored a dataset containing information about global terrorism acts since 1970, and attempted to make the findings as visual as possible.  The dataset used is called the Global Terrorism Database ([available here](http://www.start.umd.edu/gtd/)) and contains over 100,000 terrorist incidents worldwide, with over 100 different attributes for each incident.  Another dataset that is used to retrieve some additional information about countries is the GapMinder data ([available here](http://www.gapminder.org/)).  The results include 14 plots, 2 maps, and 4 tables. All look beautiful and interesting!  Most of the analysis is done globally, but one of the scripts focuses on terrorism in Israel since it is very relevant to me.
 
+If you just want to see the results and not run the scripts yourself, all relevant output is in the 'results' folder.
+
 #### How to replicate/run the analysis:
 - Download the 2 datafiles: _globalterrorismdb.csv_, _gapminderDataFiveYear.txt_
 - Download the 8 required R files: _MakeFile.R_, _common.R_, *00_installPackages.R*, *01_preprocessData.R*, *02_analysisPlots.R*, *03_analysisMaps.R*, *04_integrateGapMinder.R*, *05_israel.R*
