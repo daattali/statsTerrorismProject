@@ -123,7 +123,7 @@ ggplot(regionYearBin, aes(x = region, y = nattacks, fill = region)) +
   geom_bar(stat = "identity", show_guide=FALSE) +
   facet_wrap(~bin) +
   ylab("# of Attacks") + 
-  ggtitle("Number of Terrorist Attacks in World Regions in 5-Year Intervals Since 1970") + 
+  ggtitle("Number of Terrorist Attacks in World Regions\nin 5-Year Intervals Since 1970") + 
   xlab("") +
   coord_flip() +  # to make the bars horizontal so that reading the regions is easier
   scale_fill_manual(values = regionCol) +
