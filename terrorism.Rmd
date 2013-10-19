@@ -1,0 +1,29 @@
+```{r include = FALSE}
+opts_chunk$set(tidy = FALSE)
+source('common.R')
+library(xtable)
+
+printTable <- function(x) {
+  x <- xtable(x)
+  print(x, type = 'html', include.rowname = FALSE)
+}
+```
+
+Analysis of Global Terrorism Activity
+==============================
+_Dean Attali  
+October 2013  
+UBC STAT545A Final Project_
+
+In this project, I explored a dataset containing information about global terrorism acts since 1970, and attempted to make the findings as visual as possible.  The dataset used is called the Global Terrorism Database ([available here](http://www.start.umd.edu/gtd/)), and contains over 100,000 terrorist incidents worldwide, with over 100 different attributes for each incident.  Most of the analysis is done globally, but one of the scripts focuses on terrorism in Israel since it is very relevant to me.
+
+This report focuses on displaying the results, and de-emphasizes the actual process and code. To get a better understanding of how the data was manipulated and how all the scripts work, feel free to look at the [Git repisotry for this project](https://github.com/daattali/statsTerrorismProject).  You can also download the raw data and code to run the analysis from there.
+
+While there are dozens of interesting ideas to explore within the dataset, I had to choose only a small subset of them to implement. There is much more that can be done with this database. In order to simpmly and make the analysis much more efficient, I chose to discard over 100 attributes, and only retain a few of the key variables such as date, attack type, location, and casualties.  It should also be noted that all information from 1993 is missing from this database as a result of human error.
+
+```{r fig.width=11, fig.height=5}
+```
+
+```{r results='asis', echo = FALSE}
+printTable(head(dat))
+```
