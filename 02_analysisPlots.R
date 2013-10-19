@@ -146,7 +146,7 @@ dev.off()
 countriesTotal <- ddply(dat, .(country, region), plyrFxCount, "nattacks")
 ggplot(countriesTotal, aes(x = nattacks, y = region, color = region, cex = 1.7)) +
   geom_jitter(position = position_jitter(height = 0.4), show_guide=FALSE) +
-  ggtitle("Variation in Number of Attacks in Different Countries Within Each Region Since 1970") +
+  ggtitle("Variation in Number of Attacks in Different Countries\nWithin Each Region Since 1970") +
   xlab("# of Attacks") +
   ylab("") +
   scale_color_manual(values = regionCol) +
