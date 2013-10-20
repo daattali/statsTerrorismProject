@@ -61,7 +61,7 @@ cityAttacksFullInfo$col <- cityHeatColorRank
 # red intensity (more attacks) will get drawn on top of other cities
 
 # alright, no more data cleaning. Time to map!
-map('worldHires',fill = TRUE, col = '#F5F5F5')
+map('worldHires',fill = TRUE, col = '#FCFCFC')
 points(x = cityAttacksFullInfo$long,
        y = cityAttacksFullInfo$lat, 
        col = 'black', pch = 21, cex = 2,
@@ -104,7 +104,6 @@ dev.off()
 # will be given according to how many attacks happened, not just according to the region's rank.
 dangerYear <- 2000
 regionDanger <- ddply(subset(dat, year >= dangerYear), ~ region, plyrFxCount, "tot")
-arrange(regionDanger, desc(tot))
 heatColors <- seqPalette(max(regionDanger$tot), name = "Reds")
 regionDanger$col <- heatColors[regionDanger$tot]
 

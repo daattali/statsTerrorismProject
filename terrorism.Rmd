@@ -23,7 +23,8 @@ _Dean Attali
 October 2013  
 UBC STAT545A Final Project_
 
-**All the data and code required to create this report are available on [GitHub](https://github.com/daattali/statsTerrorismProject)**
+**Note 1:** All the data and code required to create this report are available on [GitHub](https://github.com/daattali/statsTerrorismProject).  
+**Note 2:** I know long tables are boring and annoying to look at and take up tons of vertical space, so [here](www.google.com) is an identical version of this report, without the few long tables.
 
 #### Summary
 
@@ -236,7 +237,123 @@ ggplot(regionAttacktype, aes(x = attacktype, y = count, fill = attacktype)) +
 These plots reveal a few interesting bits of information. Firstly, we can see that almost everywhere in the world bombings are the most common, followed by armed assaults and assassinations. Facility attacks and hostake kidnappings are the next most common attacks, while the rest are are very minimal. It is interesting to note that Central America is the only place where armed assault is more common than bombings, and that in Africa and Southeast Asia there are as many armed assaults as bombings.  
 Another observation that stands out is the facility attacks in North America. where it is almost the most common form of terrorism, slightly less than bombings.
 
+### A couple maps!
 
+First thing I would like to see is which cities in the world are the most dangerous (this turns out to be pretty complicated to extract, go read the code!).
 
+```{r results='asis', echo = FALSE}
+cities <- table(dat$city)
+cities <- sort(cities[cities > 100], decreasing = TRUE)
+cities <- cities[-which(names(cities) == 'Unknown')]  ## remove the 'Unknown' city
+cityNames <- names(cities)
+datcities <- subset(dat, city %in% cityNames)
+cityAttacks <- ddply(datcities, country~city, plyrFxCount, "totAttacks")
+# grab the top 20 cities with most terrorist attacks
+topNcities <- 20
+cityAttacks <- head(arrange(cityAttacks, totAttacks, decreasing = TRUE), n=topNcities)
+cityAttacksCopy <- cityAttacks
+colnames(cityAttacksCopy) <- c('Country', 'City', '# Attacks')
+printTable(cityAttacksCopy)
+```
 
-#### Terrorism in Israel
+Once again, Iraq tops the list :(  Baghdad is by far the most terror-attacked city in the world...
+
+Next, I'd like to map the cities to get a better geographic idea of where they are.  We will colour each city with an intensity of red, with Baghdad being the most red (almost brown), and every successive city being a little lighter.
+```{r fig.width=10, fig.align='center', echo=FALSE}
+# To find the cities on a map, we need to merge data with the "world.cities" dataset. But the names
+# of the cities don't always match (world.cities tries to be clever and use non-English names), so
+# we need to do some manual conversion of city names so that the merging will work properly
+cityNameMapping <- c(Bayrut = "Beirut", "Guatemala" = "Guatemala City", "al-Mawsil" = "Mosul")
+world.cities <- within(world.cities,
+                       name <- revalue(name, cityNameMapping))
+cityAttacksFullInfo <- merge(cityAttacks, world.cities,
+                             by.x = c('country', 'city'),
+                             by.y = c('country.etc', 'name'))
+# we also need to manually add Belfast, because in world.cities its under UK whereas the GTD has it
+# as Norhtern Ireland
+belfast <- cbind(cityAttacks[cityAttacks$city == 'Belfast', ],
+                 world.cities[world.cities$name=='Belfast' & world.cities$country.etc == 'UK', ])
+belfast$capital <- 1  # world.cities considers only considers London to be a capital in the UK
+cityAttacksFullInfo <- rbind(cityAttacksFullInfo,
+                             subset(belfast, select = -c(country.etc, name)))
+
+# Now we have all the data we need, but just one last thing:
+# We will make a red colour palette where every city will get matches
+# with a successively more intense red, where super red (almost brown) = most attacks
+cityAttacksFullInfo <- arrange(cityAttacksFullInfo, totAttacks)
+cityHeatColorRank <- seqPalette(nrow(cityAttacksFullInfo), name = "Reds")
+cityAttacksFullInfo$col <- cityHeatColorRank
+# Note that the list is sorted with the most attacks LAST, so that cities with a higher
+# red intensity (more attacks) will get drawn on top of other cities
+
+# alright, no more data cleaning. Time to map!
+map('worldHires',fill = TRUE, col = '#FCFCFC')
+points(x = cityAttacksFullInfo$long,
+       y = cityAttacksFullInfo$lat, 
+       col = 'black', pch = 21, cex = 2,
+       bg = cityAttacksFullInfo$col)
+title(paste('Top', topNcities, 'Most Terror-Attacked Cities'))
+```
+
+The darkest spot, in the middle east, is Baghdad, and the other fairly dark spot in the region (at the North-West corner of Europe) is Belfast. The rest of the high intensity reds are mostly in Central/South America, and the lower ones are in Europe.  There is also a lone point in Southeast Asia, in Manila (Philippines).
+
+---
+
+Before continuing, one thing that I noticed when looking at the names of those 20 cities is that I recognize a lot of them as big/capital cities.  Just out of curiosity, let's plot exactly how many of those top 20 are actually the capital city of their countries.
+
+```{r fig.width=8, fig.height=5, fig.align='center', echo=FALSE}
+capitalCounts <- table(cityAttacksFullInfo$capital)
+names(capitalCounts) <- c('Non-Capital', 'Capital City')
+capitalCounts <- as.data.frame(capitalCounts)
+capitalCounts$Var1 <- factor(capitalCounts$Var1, levels = rev(levels(capitalCounts$Var1)))
+ggplot(capitalCounts, aes(x = Var1, y = Freq, fill = Var1)) +
+  geom_bar(stat = "identity", width=0.5, show_guide = FALSE) +
+  ggtitle(paste('Distribution of Capital Cities in Top', topNcities,
+                'Most Terror-Attacked Cities')) +
+  xlab('') +
+  ylab(paste('# of Cities in Top', topNcities)) +
+  theme(panel.grid.major.x = element_blank(), panel.grid.minor.y = element_blank()) +
+  scale_fill_manual(values = c('cyan3', 'turquoise'))
+```
+
+Wow, 15 out of the 20 most terror filled cities are indeed capital cities. Looks like terrorists really choose cities of high impact (duh..).
+
+---
+
+Next I would like to plot the intensity of how dangerous each world region is recently. We will look at data since year 2000 (inclusive), and shade each region with an intensity of red. Unlike with the cities, where the intensities were divided into 20 uniform intervals, now I want to actually see how the regions compare in absolute terms, so the colour intensities will be given according to how many attacks happened, not just according to the region's rank.
+```{r fig.width=10, fig.align='center', echo=FALSE}
+dangerYear <- 2000
+regionDanger <- ddply(subset(dat, year >= dangerYear), ~ region, plyrFxCount, "tot")
+heatColors <- seqPalette(max(regionDanger$tot), name = "Reds")
+regionDanger$col <- heatColors[regionDanger$tot]
+# we have the data, now map it!
+# note that since we are using names from the GTD and trying to use them on the "mapdata" data,
+# we do need to perform a few little hacks.
+#  - mapdata only knows about a country named 'USSR'
+#  - mapdata spells 'United States' as 'USA'
+#  - GTD does not have Greenland (maybe it's under Denmark?) and because of that, when shading
+#    the map, there is a huge unshaded area there, so I manually add Greenland to Europe
+map('worldHires')
+for(i in 1:nrow(regionDanger)){
+  regionCountries <- subset(dat, region == regionDanger[i,'region'])$country
+  regionCountries <- as.character(unique(regionCountries))
+  
+  # the little hackings we need to do just to get the map to look nice...
+  if (regionDanger[i, 'region'] == 'USSR') {
+    regionCountries <- 'USSR'
+  } else if (regionDanger[i, 'region'] == 'North America') {
+    regionCountries <- c(regionCountries, 'USA')
+  } else if (regionDanger[i, 'region'] == 'Western Europe') {
+    regionCountries <- c(regionCountries, 'Greenland')
+  }
+  
+  map('worldHires',
+      regions = regionCountries,
+      add = TRUE,
+      col = regionDanger[i, 'col'], 
+      fill = TRUE)
+}
+title('Heatmap of Terrorist Attacks in World Regions Since 2000')
+```
+
+This shows pretty clearly how the Middle East and South Asia are so much worse off in terms of terrorism than the rest of the world. The only good thing to take from this map is that at least terrorists didn't get to Anteractica yet! Although Oceania, East Asia, and North America also seem fairly safe since 2000.
