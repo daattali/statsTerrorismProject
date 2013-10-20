@@ -27,8 +27,7 @@ _Dean Attali
 October 2013  
 UBC STAT545A Final Project_
 
-**Note 1:** All the data and code required to create this report are available on [GitHub](https://github.com/daattali/statsTerrorismProject).  
-**Note 2:** I know long tables are boring and annoying to look at and take up tons of vertical space, so [here](http://rpubs.com/daattali/statsTerrorismProjectNoTables) is an identical version of this report without the few long tables.
+**Note:** All the data and code required to create this report are available on [GitHub](https://github.com/daattali/statsTerrorismProject).
 
 Summary
 ---------

@@ -7,8 +7,7 @@ _Dean Attali
 October 2013  
 UBC STAT545A Final Project_
 
-**Note 1:** All the data and code required to create this report are available on [GitHub](https://github.com/daattali/statsTerrorismProject).  
-**Note 2:** I know long tables are boring and annoying to look at and take up tons of vertical space, so [here](http://rpubs.com/daattali/statsTerrorismProjectNoTables) is an identical version of this report without the few long tables.
+**Note:** All the data and code required to create this report are available on [GitHub](https://github.com/daattali/statsTerrorismProject).
 
 Summary
 ---------
@@ -86,7 +85,7 @@ Each point represents the number of terrorist attacks in a country, divided into
 It would be interesting to see which countries are the ones that are hit the hardest.  By visual inspection, we can see that there are never more than 5 countries in a region that are extremely worse than the rest, so let's pick out the highest 5 per region. We'll also drop the 3 boring continents to make the resulting table a little bit easier to digest.
 
 <!-- html table generated in R 3.0.1 by xtable 1.7-1 package -->
-<!-- Sat Oct 19 18:44:51 2013 -->
+<!-- Sat Oct 19 22:49:13 2013 -->
 <TABLE border=1>
 <TR> <TH> Region </TH> <TH> Country </TH> <TH> # Attacks </TH>  </TR>
   <TR> <TD> Middle East </TD> <TD> Iraq </TD> <TD align="right"> 7807 </TD> </TR>
@@ -160,7 +159,7 @@ Another observation that stands out is the facility attacks in North America. wh
 First thing I would like to see is which cities in the world are the most dangerous (this turns out to be pretty complicated to extract, [go read the code!](https://github.com/daattali/statsTerrorismProject)).
 
 <!-- html table generated in R 3.0.1 by xtable 1.7-1 package -->
-<!-- Sat Oct 19 18:44:53 2013 -->
+<!-- Sat Oct 19 22:49:15 2013 -->
 <TABLE border=1>
 <TR> <TH> Country </TH> <TH> City </TH> <TH> # Attacks </TH>  </TR>
   <TR> <TD> Iraq </TD> <TD> Baghdad </TD> <TD align="right"> 3358 </TD> </TR>
@@ -219,7 +218,7 @@ This shows pretty clearly how the Middle East and South Asia are so much worse o
 Earlier we looked at which countries had the most terrorist attacks. Another way to look at that could be to see which countries had the most attacks relative to how big the country is. For example, if two countries have the same number of terrorism acts, but one country has 100x the population of the other, then that could be seen as valuable information. We merge data with [GapMinder](http://www.gapminder.org/) for this.  Here are the top 5.
 
 <!-- html table generated in R 3.0.1 by xtable 1.7-1 package -->
-<!-- Sat Oct 19 18:45:00 2013 -->
+<!-- Sat Oct 19 22:49:22 2013 -->
 <TABLE border=1>
 <TR> <TH> Country </TH> <TH> # Attacks </TH> <TH> Population </TH> <TH> Population Per Attack </TH>  </TR>
   <TR> <TD> El Salvador </TD> <TD align="right"> 5320 </TD> <TD align="right"> 6939688 </TD> <TD align="right"> 1304 </TD> </TR>
@@ -252,7 +251,7 @@ Looking at this plot, we see (as suspected) that most of the 100 deadliest attac
 Let's take a look at what attacks these were.
 
 <!-- html table generated in R 3.0.1 by xtable 1.7-1 package -->
-<!-- Sat Oct 19 18:45:01 2013 -->
+<!-- Sat Oct 19 22:49:23 2013 -->
 <TABLE border=1>
 <TR> <TH> Country </TH> <TH> Year </TH> <TH> Month </TH> <TH> Day </TH> <TH> City </TH> <TH> Attack Type </TH> <TH> # Killed </TH> <TH> # Wounded </TH>  </TR>
   <TR> <TD> Canada </TD> <TD align="right"> 1985 </TD> <TD align="right">   6 </TD> <TD align="right">  23 </TD> <TD> Toronto </TD> <TD> Bombing/Explosion </TD> <TD align="right"> 329.00 </TD> <TD align="right"> 0.00 </TD> </TR>
