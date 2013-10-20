@@ -34,4 +34,4 @@ If you just want to see the results and not run the scripts yourself, all releva
 - **globalterrorismdb.csv** - Raw unprocessed input from Global Terrorism Database
 - **globalterrorismdb_clean.csv** - Processed, clean terrorism data
 - **gapminderDataFiveYear.txt** - GapMinder raw data
-
+- **terrorism.Rmd**, **terrorism.html** - The R Markdown and HTML of a report version of this project 
