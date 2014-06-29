@@ -1,7 +1,7 @@
 Analysis of Global Terrorism Activity
 ==============================
 _Dean Attali  
-October 2013  
+October 2013   
 UBC STAT545A Final Project_
 
 #### Report
