@@ -1,8 +1,9 @@
 Analysis of Global Terrorism Activity
 ==============================
-_Dean Attali  
-October 2013   
-UBC STAT545A Final Project_
+
+> *Copyright 2013 [Dean Attali](http://deanattali.com). Licensed under the MIT license.*
+
+_UBC STAT545A Final Project_
 
 #### Report
 A visual report with written analysis of this project, but without all the code, is available [here](http://rpubs.com/daattali/statsTerrorismProject).
