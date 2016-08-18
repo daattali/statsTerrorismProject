@@ -36,7 +36,7 @@ In this project, I explored a dataset containing information about global terror
 
 While there are dozens of interesting ideas to explore within the dataset, I had to choose only a small subset of them to implement. There is much more that can be done with this database. In order to simplify and make the analysis much more efficient, I chose to discard over 100 attributes, and only retain a few of the key variables such as date, attack type, location, and casualties.  It should also be noted that all information from 1993 is missing from this database as a result of human error (more information is available [here](http://www.start.umd.edu/gtd/faq/#q9)).
 
-This report focuses on displaying and anlyzing the results, but de-emphasizes the underlying process and code. Numerous hours were spent on getting this done, including several all-night coding sessions that ended after the birds got up. To get a better understanding of how the data was manipulated and how all the scripts work, feel free to look at the [Git repository for this project](https://github.com/daattali/statsTerrorismProject).  You can also download the raw data and code to run the analysis from there.
+This report focuses on displaying and analyzing the results, but de-emphasizes the underlying process and code. Numerous hours were spent on getting this done, including several all-night coding sessions that ended after the birds got up. To get a better understanding of how the data was manipulated and how all the scripts work, feel free to look at the [Git repository for this project](https://github.com/daattali/statsTerrorismProject).  You can also download the raw data and code to run the analysis from there.
 
 ### Global Terrorism
 
